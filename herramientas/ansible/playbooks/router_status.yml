@@ -1,0 +1,28 @@
+---
+- name: Consultar estado del MikroTik
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+
+    - name: Consultar identidad del router
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: router_identity
+      changed_when: false
+
+    - name: Consultar recursos del sistema
+      community.routeros.command:
+        commands:
+          - /system resource print
+      register: router_resources
+      changed_when: false
+
+    - name: Mostrar identidad del router
+      ansible.builtin.debug:
+        var: router_identity.stdout_lines
+
+    - name: Mostrar recursos del router
+      ansible.builtin.debug:
+        var: router_resources.stdout_lines
