@@ -1,0 +1,66 @@
+
+---
+- name: Validar configuracion e idempotencia del MikroTik
+  hosts: mikrotik
+  gather_facts: false
+
+  vars:
+    desired_identity: Hermes-CHR
+    desired_interface: ether1
+    desired_comment: Gestion Ansible - TAP
+
+  tasks:
+
+    - name: Consultar identidad actual
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: current_identity
+      changed_when: false
+
+    - name: Consultar comentario actual de la interfaz
+      community.routeros.command:
+        commands:
+          - /interface ethernet print detail where name=ether1
+      register: current_interface
+      changed_when: false
+
+    - name: Corregir identidad si es necesario
+      community.routeros.command:
+        commands:
+          - /system identity set name={{ desired_identity }}
+      when: desired_identity not in current_identity.stdout[0]
+
+    - name: Corregir comentario si es necesario
+      community.routeros.command:
+        commands:
+          - /interface ethernet set [find where name={{ desired_interface }}] comment="{{ desired_comment }}"
+      when: desired_comment not in current_interface.stdout[0]
+
+    - name: Consultar identidad final
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: final_identity
+      changed_when: false
+
+    - name: Consultar interfaz final
+      community.routeros.command:
+        commands:
+          - /interface ethernet print detail where name=ether1
+      register: final_interface
+      changed_when: false
+
+    - name: Validar identidad configurada
+      ansible.builtin.assert:
+        that:
+          - desired_identity in final_identity.stdout[0]
+        success_msg: "La identidad del MikroTik es correcta."
+        fail_msg: "La identidad del MikroTik no coincide."
+
+    - name: Validar comentario de interfaz
+      ansible.builtin.assert:
+        that:
+          - desired_comment in final_interface.stdout[0]
+        success_msg: "El comentario de ether1 es correcto."
+        fail_msg: "El comentario de ether1 no coincide."
