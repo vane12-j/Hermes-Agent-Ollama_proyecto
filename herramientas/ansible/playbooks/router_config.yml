@@ -1,0 +1,43 @@
+---
+- name: Configurar MikroTik mediante Ansible
+  hosts: mikrotik
+  gather_facts: false
+
+  vars:
+    router_identity: Hermes-CHR
+    interface_name: ether1
+    interface_comment: Gestion Ansible - TAP
+
+  tasks:
+
+    - name: Configurar identidad del MikroTik
+      community.routeros.command:
+        commands:
+          - /system identity set name={{ router_identity }}
+
+    - name: Configurar comentario de la interfaz
+      community.routeros.command:
+        commands:
+          - /interface ethernet set [find where name={{ interface_name }}] comment="{{ interface_comment }}"
+
+    - name: Consultar identidad configurada
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: identity_result
+      changed_when: false
+
+    - name: Consultar interfaz configurada
+      community.routeros.command:
+        commands:
+          - /interface ethernet print detail where name=ether1
+      register: interface_result
+      changed_when: false
+
+    - name: Mostrar identidad
+      ansible.builtin.debug:
+        var: identity_result.stdout_lines
+
+    - name: Mostrar configuracion de interfaz
+      ansible.builtin.debug:
+        var: interface_result.stdout_lines
