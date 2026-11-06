@@ -1,0 +1,14 @@
+---
+# Configuracion de conexion al MikroTik
+
+ansible_host: "{{ lookup('env', 'MT_HOST') }}"
+
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: community.routeros.routeros
+
+ansible_user: "{{ lookup('env', 'MT_USER') }}"
+ansible_password: "{{ lookup('env', 'MT_PASS') }}"
+ansible_port: "{{ lookup('env', 'MT_PORT') | default('22', true) }}"
+
+ansible_connect_timeout: 15
+ansible_command_timeout: 30
