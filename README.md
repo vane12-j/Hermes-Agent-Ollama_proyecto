@@ -404,6 +404,64 @@ Ambas herramientas devuelven sus resultados en formato JSON e informan si la ope
 
 Estas operaciones son únicamente de consulta y no modifican la configuración del router.
 
+### 9.3. Configurar la identidad del router
+
+Archivo:
+
+```text
+configurar_identidad.py
+```
+
+Esta herramienta modifica la identidad (nombre) del MikroTik mediante el comando:
+
+```routeros
+/system identity set name=NOMBRE
+```
+
+Antes y después del cambio realiza los siguientes controles:
+
+1. Valida el nombre solicitado: de 1 a 64 caracteres entre letras, números, `.`, `_` o `-`.
+2. Consulta la identidad actual con `/system identity print`.
+3. Si el router ya tiene la identidad solicitada, no realiza cambios.
+4. Muestra el cambio y solicita confirmación al operador (`s` para confirmar).
+5. Aplica el cambio.
+6. Verifica, en una conexión nueva, que la identidad final coincida con la solicitada.
+
+Ejecutar:
+
+```bash
+python herramientas/python/configurar_identidad.py --nombre Hermes-CHR
+```
+
+Ejemplo de confirmación:
+
+```text
+Cambio solicitado sobre el MikroTik:
+  Identidad actual: MikroTik
+  Identidad nueva:  Hermes-CHR
+¿Confirma el cambio? [s/N]:
+```
+
+Si el operador ya aprobó el cambio por otro medio (por ejemplo, a través del agente), se puede omitir la pregunta con `--confirmar`:
+
+```bash
+python herramientas/python/configurar_identidad.py --nombre Hermes-CHR --confirmar
+```
+
+El resultado se devuelve en formato JSON:
+
+| Campo | Descripción |
+|---|---|
+| `success` | Indica si la operación terminó correctamente. |
+| `estado` | `aplicado`, `sin_cambios`, `cancelado` o `error`. |
+| `identidad_anterior` | Identidad consultada antes del cambio. |
+| `identidad_solicitada` | Identidad indicada con `--nombre`. |
+| `identidad_final` | Identidad consultada después del cambio. |
+| `cambio_aplicado` | Indica si se envió el cambio al router. |
+| `verificado` | Indica si la identidad final coincide con la solicitada. |
+
+Códigos de salida: `0` cambio aplicado o no necesario, `1` error, `2` cambio no confirmado por el operador.
+
 ## 10. Ejecución de Ansible
 
 Para trabajar con las herramientas Ansible se requiere tener instalado Ansible y configurar el inventario con los datos de conexión del MikroTik.
@@ -441,7 +499,8 @@ proyecto_redesProgramables/
 ├── herramientas/
 │   ├── python/
 │   │   ├── consultar_interfaces.py
-│   │   └── consultar_direcciones_ip.py
+│   │   ├── consultar_direcciones_ip.py
+│   │   └── configurar_identidad.py
 │   │
 │   └── ansible/
 │
