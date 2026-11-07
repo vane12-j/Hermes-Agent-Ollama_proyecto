@@ -87,7 +87,7 @@ sudo apt install -y git python3 python3-pip python3-venv curl
 ### 5.3. Clonar el repositorio
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/vane12-j/Hermes-Agent-Ollama_proyecto
 ```
 
 Ingresar a la carpeta:
