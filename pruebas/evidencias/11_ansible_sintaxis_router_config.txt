@@ -1,0 +1,12 @@
+Fecha: 2026-11-06 19:16:28
+Comando: ansible-playbook -i herramientas/ansible/inventory/hosts.yml herramientas/ansible/playbooks/router_config.yml --syntax-check
+Código de salida: 0
+
+----- salida estándar -----
+
+playbook: herramientas/ansible/playbooks/router_config.yml
+
+----- salida de errores -----
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: PARAMIKO_LOOK_FOR_KEYS option. Reason: This option was moved to the plugin itself
+Alternatives: Use the option from the plugin itself. This feature will be removed from ansible-core version 2.20.

@@ -1,0 +1,13 @@
+Fecha: 2026-11-06 19:15:38
+Comando: .venv/bin/python herramientas/python/consultar_direcciones_ip.py
+Código de salida: 0
+
+----- salida estándar -----
+{
+  "success": true,
+  "tool": "consultar_direcciones_ip",
+  "data": "Columns: ADDRESS, NETWORK, INTERFACE\n# ADDRESS           NETWORK        INTERFACE\n0 192.168.100.2/24  192.168.100.0  ether1"
+}
+
+----- salida de errores -----
+
