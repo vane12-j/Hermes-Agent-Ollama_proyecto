@@ -1,0 +1,58 @@
+Fecha: 2026-11-06 19:16:46
+Comando: ansible-playbook -i herramientas/ansible/inventory/hosts.yml herramientas/ansible/playbooks/router_status.yml
+Código de salida: 0
+
+----- salida estándar -----
+
+PLAY [Consultar estado del MikroTik] *******************************************
+
+TASK [Consultar identidad del router] ******************************************
+ok: [router]
+
+TASK [Consultar recursos del sistema] ******************************************
+ok: [router]
+
+TASK [Mostrar identidad del router] ********************************************
+ok: [router] => {
+    "router_identity.stdout_lines": [
+        [
+            "name: MikroTik"
+        ]
+    ]
+}
+
+TASK [Mostrar recursos del router] *********************************************
+ok: [router] => {
+    "router_resources.stdout_lines": [
+        [
+            "uptime: 29m30s",
+            "                  version: 7.16 (stable)",
+            "               build-time: 2024-09-20 13:00:27",
+            "         factory-software: 7.1",
+            "              free-memory: 139.8MiB",
+            "             total-memory: 384.0MiB",
+            "                      cpu: QEMU",
+            "                cpu-count: 1",
+            "            cpu-frequency: 1992MHz",
+            "                 cpu-load: 5%",
+            "           free-hdd-space: 71.2MiB",
+            "          total-hdd-space: 89.2MiB",
+            "  write-sect-since-reboot: 4360",
+            "         write-sect-total: 4360",
+            "        architecture-name: x86_64",
+            "               board-name: CHR QEMU Standard PC (i440FX + PIIX, 1996)",
+            "                 platform: MikroTik"
+        ]
+    ]
+}
+
+PLAY RECAP *********************************************************************
+router                     : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+----- salida de errores -----
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: PARAMIKO_LOOK_FOR_KEYS option. Reason: This option was moved to the plugin itself
+Alternatives: Use the option from the plugin itself. This feature will be removed from ansible-core version 2.20.
+
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[DEPRECATION WARNING]: The paramiko connection plugin is deprecated. This feature will be removed from ansible-core version 2.21.

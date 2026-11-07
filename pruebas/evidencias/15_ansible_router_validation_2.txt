@@ -1,0 +1,48 @@
+Fecha: 2026-11-06 19:17:34
+Comando: ansible-playbook -i herramientas/ansible/inventory/hosts.yml herramientas/ansible/playbooks/router_validation.yml
+Código de salida: 0
+
+----- salida estándar -----
+
+PLAY [Validar configuracion e idempotencia del MikroTik] ***********************
+
+TASK [Consultar identidad actual] **********************************************
+ok: [router]
+
+TASK [Consultar comentario actual de la interfaz] ******************************
+ok: [router]
+
+TASK [Corregir identidad si es necesario] **************************************
+skipping: [router]
+
+TASK [Corregir comentario si es necesario] *************************************
+skipping: [router]
+
+TASK [Consultar identidad final] ***********************************************
+ok: [router]
+
+TASK [Consultar interfaz final] ************************************************
+ok: [router]
+
+TASK [Validar identidad configurada] *******************************************
+ok: [router] => {
+    "changed": false,
+    "msg": "La identidad del MikroTik es correcta."
+}
+
+TASK [Validar comentario de interfaz] ******************************************
+ok: [router] => {
+    "changed": false,
+    "msg": "El comentario de ether1 es correcto."
+}
+
+PLAY RECAP *********************************************************************
+router                     : ok=6    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+----- salida de errores -----
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: PARAMIKO_LOOK_FOR_KEYS option. Reason: This option was moved to the plugin itself
+Alternatives: Use the option from the plugin itself. This feature will be removed from ansible-core version 2.20.
+
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[DEPRECATION WARNING]: The paramiko connection plugin is deprecated. This feature will be removed from ansible-core version 2.21.

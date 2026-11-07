@@ -1,0 +1,23 @@
+Fecha: 2026-11-06 19:16:12
+Comando: .venv/bin/python herramientas/python/configurar_identidad.py --nombre Hermes-Prueba
+Entrada del operador: 's'
+Código de salida: 0
+
+----- salida estándar -----
+{
+  "tool": "configurar_identidad",
+  "success": true,
+  "estado": "aplicado",
+  "identidad_anterior": "MikroTik",
+  "identidad_solicitada": "Hermes-Prueba",
+  "identidad_final": "Hermes-Prueba",
+  "cambio_aplicado": true,
+  "verificado": true,
+  "mensaje": "Identidad modificada y verificada correctamente."
+}
+
+----- salida de errores -----
+Cambio solicitado sobre el MikroTik:
+  Identidad actual: MikroTik
+  Identidad nueva:  Hermes-Prueba
+¿Confirma el cambio? [s/N]:

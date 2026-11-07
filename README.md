@@ -462,6 +462,16 @@ El resultado se devuelve en formato JSON:
 
 Códigos de salida: `0` cambio aplicado o no necesario, `1` error, `2` cambio no confirmado por el operador.
 
+### 9.4. Pruebas de funcionamiento
+
+Las pruebas de las cuatro herramientas (las tres de Python y los playbooks de Ansible) se ejecutan contra el MikroTik con:
+
+```bash
+python pruebas/ejecutar_pruebas.py
+```
+
+El procedimiento, los casos de prueba, los resultados y las evidencias se documentan en [`pruebas/README.md`](pruebas/README.md).
+
 ## 10. Ejecución de Ansible
 
 Para trabajar con las herramientas Ansible se requiere tener instalado Ansible y configurar el inventario con los datos de conexión del MikroTik.
@@ -503,6 +513,11 @@ proyecto_redesProgramables/
 │   │   └── configurar_identidad.py
 │   │
 │   └── ansible/
+│
+├── pruebas/
+│   ├── ejecutar_pruebas.py
+│   ├── README.md
+│   └── evidencias/
 │
 ├── .env.example
 ├── .gitignore

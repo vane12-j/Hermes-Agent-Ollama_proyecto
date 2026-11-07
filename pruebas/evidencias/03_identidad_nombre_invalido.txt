@@ -1,0 +1,15 @@
+Fecha: 2026-11-06 19:15:39
+Comando: .venv/bin/python herramientas/python/configurar_identidad.py --nombre mal;nombre
+Código de salida: 1
+
+----- salida estándar -----
+{
+  "tool": "configurar_identidad",
+  "success": false,
+  "estado": "error",
+  "identidad_solicitada": "mal;nombre",
+  "error": "Nombre no válido: use de 1 a 64 caracteres entre letras, números, '.', '_' o '-'."
+}
+
+----- salida de errores -----
+

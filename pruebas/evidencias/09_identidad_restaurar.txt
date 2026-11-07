@@ -1,0 +1,19 @@
+Fecha: 2026-11-06 19:16:26
+Comando: .venv/bin/python herramientas/python/configurar_identidad.py --nombre MikroTik --confirmar
+Código de salida: 0
+
+----- salida estándar -----
+{
+  "tool": "configurar_identidad",
+  "success": true,
+  "estado": "aplicado",
+  "identidad_anterior": "Hermes-Prueba",
+  "identidad_solicitada": "MikroTik",
+  "identidad_final": "MikroTik",
+  "cambio_aplicado": true,
+  "verificado": true,
+  "mensaje": "Identidad modificada y verificada correctamente."
+}
+
+----- salida de errores -----
+

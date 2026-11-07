@@ -1,0 +1,13 @@
+Fecha: 2026-11-06 19:15:35
+Comando: .venv/bin/python herramientas/python/consultar_interfaces.py
+Código de salida: 0
+
+----- salida estándar -----
+{
+  "success": true,
+  "tool": "consultar_interfaces",
+  "data": "Flags: R - RUNNING\nColumns: NAME, TYPE, ACTUAL-MTU, MAC-ADDRESS\n#   NAME    TYPE      ACTUAL-MTU  MAC-ADDRESS      \n0 R ether1  ether           1500  0C:00:80:4D:00:00\n1   ether2  ether           1500  0C:00:80:4D:00:01\n2   ether3  ether           1500  0C:00:80:4D:00:02\n3   ether4  ether           1500  0C:00:80:4D:00:03\n4   ether5  ether           1500  0C:00:80:4D:00:04\n5   ether6  ether           1500  0C:00:80:4D:00:05\n6   ether7  ether           1500  0C:00:80:4D:00:06\n7   ether8  ether           1500  0C:00:80:4D:00:07\n8 R lo      loopback       65536  00:00:00:00:00:00"
+}
+
+----- salida de errores -----
+

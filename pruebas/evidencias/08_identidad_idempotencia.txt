@@ -1,0 +1,19 @@
+Fecha: 2026-11-06 19:16:15
+Comando: .venv/bin/python herramientas/python/configurar_identidad.py --nombre Hermes-Prueba
+Código de salida: 0
+
+----- salida estándar -----
+{
+  "tool": "configurar_identidad",
+  "success": true,
+  "estado": "sin_cambios",
+  "identidad_anterior": "Hermes-Prueba",
+  "identidad_solicitada": "Hermes-Prueba",
+  "identidad_final": "Hermes-Prueba",
+  "cambio_aplicado": false,
+  "verificado": true,
+  "mensaje": "El router ya tiene la identidad solicitada; no se realizaron cambios."
+}
+
+----- salida de errores -----
+
