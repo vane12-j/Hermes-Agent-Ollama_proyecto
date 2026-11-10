@@ -1,3 +1,4 @@
+
 ---
 - name: Configurar MikroTik mediante Ansible
   hosts: mikrotik
@@ -6,38 +7,92 @@
   vars:
     router_identity: Hermes-CHR
     interface_name: ether1
-    interface_comment: Gestion Ansible - TAP
+    interface_comment: "Gestion Ansible - TAP"
 
   tasks:
+    - name: Consultar identidad actual
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: current_identity
+      changed_when: false
+
+    - name: Consultar comentario actual de la interfaz
+      community.routeros.command:
+        commands:
+          - /interface ethernet print detail where name=ether1
+      register: current_interface
+      changed_when: false
+
+    - name: Determinar si hay cambios pendientes
+      ansible.builtin.set_fact:
+        identity_needs_change: "{{ router_identity not in current_identity.stdout[0] }}"
+        comment_needs_change: "{{ interface_comment not in current_interface.stdout[0] }}"
+
+    - name: Mostrar cambios solicitados
+      ansible.builtin.debug:
+        msg:
+          - "Identidad actual: {{ current_identity.stdout[0] }}"
+          - "Nueva identidad: {{ router_identity }}"
+          - "Comentario de interfaz actual: {{ current_interface.stdout[0] }}"
+          - "Nuevo comentario: {{ interface_comment }}"
+
+    - name: Solicitar autorización del operador
+      ansible.builtin.pause:
+        prompt: "¿Autoriza aplicar los cambios al MikroTik? (escriba SI para confirmar)"
+      register: operator_confirmation
+      when: identity_needs_change or comment_needs_change
+      delegate_to: localhost
+      run_once: true
+
+    - name: Detener si el operador no autoriza
+      ansible.builtin.fail:
+        msg: "Operación cancelada. No se modificó la configuración."
+      when:
+        - (identity_needs_change or comment_needs_change)
+        - operator_confirmation.user_input | default('') | upper != 'SI'
 
     - name: Configurar identidad del MikroTik
       community.routeros.command:
         commands:
-          - /system identity set name={{ router_identity }}
+          - '/system identity set name="{{ router_identity }}"'
+      when:
+        - identity_needs_change
+        - operator_confirmation.user_input | default('') | upper == 'SI'
 
     - name: Configurar comentario de la interfaz
       community.routeros.command:
         commands:
-          - /interface ethernet set [find where name={{ interface_name }}] comment="{{ interface_comment }}"
+          - '/interface ethernet set [find where name="{{ interface_name }}"] comment="{{ interface_comment }}"'
+      when:
+        - comment_needs_change
+        - operator_confirmation.user_input | default('') | upper == 'SI'
 
-    - name: Consultar identidad configurada
+    - name: Consultar identidad final
       community.routeros.command:
         commands:
           - /system identity print
-      register: identity_result
+      register: final_identity
       changed_when: false
 
-    - name: Consultar interfaz configurada
+    - name: Consultar interfaz final
       community.routeros.command:
         commands:
           - /interface ethernet print detail where name=ether1
-      register: interface_result
+      register: final_interface
       changed_when: false
 
-    - name: Mostrar identidad
-      ansible.builtin.debug:
-        var: identity_result.stdout_lines
+    - name: Verificar identidad
+      ansible.builtin.assert:
+        that:
+          - router_identity in final_identity.stdout[0]
+        success_msg: "Identidad configurada correctamente."
+        fail_msg: "La identidad no coincide con el valor solicitado."
 
-    - name: Mostrar configuracion de interfaz
-      ansible.builtin.debug:
-        var: interface_result.stdout_lines
+    - name: Verificar comentario
+      ansible.builtin.assert:
+        that:
+          - interface_comment in final_interface.stdout[0]
+        success_msg: "Comentario configurado correctamente."
+        fail_msg: "El comentario no coincide con el valor solicitado."
+

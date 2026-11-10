@@ -123,7 +123,7 @@ def playbook(nombre, *args):
 def recap(salida):
     """Devuelve la línea PLAY RECAP del router."""
     for linea in salida.splitlines():
-        if linea.startswith("router") and "ok=" in linea:
+        if "ok=" in linea and "failed=" in linea:
             return " ".join(linea.split())
     return "sin PLAY RECAP"
 
