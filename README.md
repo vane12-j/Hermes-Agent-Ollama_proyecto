@@ -472,6 +472,104 @@ python pruebas/ejecutar_pruebas.py
 
 El procedimiento, los casos de prueba, los resultados y las evidencias se documentan en [`pruebas/README.md`](pruebas/README.md).
 
+9.5. Integración con Hermes Agent mediante MCP
+
+El proyecto incorpora un servidor MCP (Model Context Protocol) que permite a Hermes Agent utilizar herramientas externas para consultar información del MikroTik.
+
+El servidor se encuentra en:
+
+herramientas/mcp/servidor.py
+
+Actualmente expone las siguientes herramientas:
+
+Herramienta
+
+Función
+
+consultar_interfaces
+
+Consulta las interfaces de red del MikroTik.
+
+consultar_direcciones_ip
+
+Consulta las direcciones IP configuradas en el router.
+
+El servidor ejecuta los scripts de Python correspondientes y devuelve sus resultados en formato JSON.
+
+Configuración del servidor MCP
+
+El servidor utiliza el entorno virtual del proyecto y carga las variables de conexión desde .env, sin mostrar las credenciales.
+
+Para registrarlo en Hermes Agent se utiliza:
+
+hermes mcp add mikrotik --command "$(pwd)/.venv/bin/python" --args "$(pwd)/herramientas/mcp/servidor.py"
+
+Comprobar la conexión:
+
+hermes mcp list
+hermes mcp test mikrotik
+
+Una vez conectado, Hermes puede descubrir las herramientas disponibles y utilizarlas según las solicitudes del usuario.
+
+Ejemplos de solicitudes
+
+Consultar las interfaces:
+
+Consulta las interfaces de red de mi MikroTik.
+
+Consultar las direcciones IP:
+
+Consulta las direcciones IP configuradas en mi MikroTik.
+Muéstrame la dirección, la interfaz y si es dinámica o estática.
+
+9.6. Evidencias de funcionamiento
+
+Se realizaron pruebas de integración utilizando Hermes Agent y el servidor MCP conectado al MikroTik.
+
+Prueba 1. Consulta de interfaces
+
+Hermes identificó y ejecutó la herramienta consultar_interfaces, obteniendo información real de las interfaces del router.
+
+Prueba 2. Consulta de direcciones IP
+
+Hermes ejecutó consultar_direcciones_ip y presentó los siguientes resultados:
+
+Dirección IP
+
+Interfaz
+
+Tipo
+
+192.168.56.7/24
+
+ether2
+
+Estática
+
+10.253.0.4/32
+
+lo-ssh-4
+
+Estática
+
+10.0.2.15/24
+
+ether1
+
+Dinámica
+
+Estas pruebas confirman la comunicación entre Hermes Agent, Ollama, el servidor MCP y el dispositivo MikroTik.
+
+9.7. Estado de la configuración mediante MCP
+
+La herramienta configurar_identidad.py cuenta con validaciones, confirmación del operador y verificación posterior al cambio cuando se ejecuta directamente desde el entorno Python configurado.
+
+Sin embargo, su ejecución desde Hermes mediante MCP todavía requiere ajustar la transferencia de las variables de entorno y las dependencias del entorno virtual.
+
+Por esta razón, la configuración de identidad no se considera todavía una herramienta MCP operativa.
+
+Esta limitación queda identificada como trabajo pendiente del proyecto.
+
 ## 10. Ejecución de Ansible
 
 Para trabajar con las herramientas Ansible se requiere tener instalado Ansible y configurar el inventario con los datos de conexión del MikroTik.
